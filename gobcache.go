@@ -7,11 +7,11 @@ import (
 )
 
 func NewCache(config Config) Client {
+	config.setDefaultLoggerIfNil()
+	config.setDefaultDirectoryIfNotExit()
+	config.setDefaultTTL()
 	c := Client{}
-	config.SetDefaultLoggerIfNil()
-	config.SetDefaultDirectoryIfNotExit()
 	c.Config = config
-
 	return c
 }
 
@@ -32,8 +32,8 @@ func (c *Client) SaveData(hash string, data interface{}) error {
 
 func (c *Client) GetData(hash string, obj interface{}) error {
 	filename := fmt.Sprintf("%s/%s.gob", c.Config.Path, hash)
-	if !fileExistsAndNotOlderThan(filename, c.Config.LifetimeHours) {
-		return fmt.Errorf("File not exists or is older than %dh", c.Config.LifetimeHours)
+	if !fileExistsAndNotOlderThan(filename, c.Config.TTL) {
+		return fmt.Errorf("File not exists or is older than %dh", c.Config.TTL)
 	}
 
 	fh, err := os.Open(filename)
