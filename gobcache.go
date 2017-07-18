@@ -47,6 +47,7 @@ func (c *Client) GetData(hash string, obj interface{}) error {
 	if err != nil {
 		return fmt.Errorf("Error GetData(): %s", hash)
 	}
+	c.Config.Logger.Printf("Read data from cache %s", filename)
 
 	return nil
 }
