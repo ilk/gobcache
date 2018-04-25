@@ -15,9 +15,9 @@ func NewCache(config Config) Client {
 	return c
 }
 
-func (c *Client) SaveData(hash string, data interface{}) error {
+func (c *Client) SaveData(filename string, data interface{}) error {
 	c.Config.Logger.Printf("Save data to disk")
-	fh, err := os.Create(fmt.Sprintf("%s/%s.gob", c.Config.Path, hash))
+	fh, err := os.Create(fmt.Sprintf("%s/%s.gob", c.Config.Path, filename))
 	if err != nil {
 		return err
 	}
@@ -33,7 +33,8 @@ func (c *Client) SaveData(hash string, data interface{}) error {
 func (c *Client) GetData(hash string, obj interface{}) error {
 	filename := fmt.Sprintf("%s/%s.gob", c.Config.Path, hash)
 	if !fileExistsAndNotOlderThan(filename, c.Config.TTL) {
-		return fmt.Errorf("File not exists or is older than %dh", c.Config.TTL)
+		c.Config.Logger.Printf("%s does exists or is older than %d\n", filename, c.Config.TTL)
+		return nil
 	}
 
 	fh, err := os.Open(filename)
@@ -45,7 +46,7 @@ func (c *Client) GetData(hash string, obj interface{}) error {
 	decoder := gob.NewDecoder(fh)
 	err = decoder.Decode(obj)
 	if err != nil {
-		return fmt.Errorf("Error GetData(): %s", hash)
+		return fmt.Errorf("Error GetData(): %s, %v", hash, err)
 	}
 	c.Config.Logger.Printf("Read data from cache %s", filename)
 

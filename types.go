@@ -6,8 +6,7 @@ import (
 )
 
 const (
-	def_tmp_dir = "/tmp"
-	def_ttl     = 8
+	def_ttl = 8
 )
 
 type Config struct {
@@ -26,7 +25,7 @@ type Client struct {
 func (c *Config) setDefaultDirectoryIfNotExit() {
 	_, err := os.Open(c.Path)
 	if err != nil {
-		c.Path = def_tmp_dir
+		c.Path = "."
 	}
 }
 
