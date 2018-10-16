@@ -34,7 +34,7 @@ func (c *Client) GetData(hash string, obj interface{}) error {
 	filename := fmt.Sprintf("%s/%s.gob", c.Config.Path, hash)
 	if !fileExistsAndNotOlderThan(filename, c.Config.TTL) {
 		c.Config.Logger.Printf("%s does exists or is older than %d\n", filename, c.Config.TTL)
-		return nil
+		return fmt.Errorf("%s does not exists or is older than %d\n", filename, c.Config.TTL)
 	}
 
 	fh, err := os.Open(filename)
