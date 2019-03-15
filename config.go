@@ -6,26 +6,33 @@ import (
 )
 
 const (
-	def_ttl = 8
+	defTTL = 8
 )
 
+// config holds up parameters
 type Config struct {
-	// Were the *.gob files will be stored
+	// Were the *.gob files will be stored, default is $TMPDIR/<name of executable>
 	Path string
 	// Renew cache when file is older than TTL (in hours)
 	TTL int64
-	// Add custom logger, default is *log.Logger from GO
+	// Add custom logger, default adds a prefix "[gobcache] date time"
 	Logger *log.Logger
 }
 
+// Client provides SaveData() and GetData()
 type Client struct {
-	Config Config
+	config Config
 }
 
 func (c *Config) setDefaultDirectoryIfNotExit() {
 	_, err := os.Open(c.Path)
 	if err != nil {
-		c.Path = "."
+		err := os.MkdirAll(os.TempDir(), 0755)
+		if err == nil {
+			c.Path = os.TempDir()
+		} else {
+			c.Path = "."
+		}
 	}
 }
 
@@ -37,6 +44,6 @@ func (c *Config) setDefaultLoggerIfNil() {
 
 func (c *Config) setDefaultTTL() {
 	if c.TTL == 0 {
-		c.TTL = def_ttl
+		c.TTL = defTTL
 	}
 }
