@@ -1,13 +1,12 @@
-## gobcache
-
-[![GoDoc](https://godoc.org/github.com/ilk/gobcache?status.svg)](https://godoc.org/github.com/ilk/gobcache)
-
+# gobcache
 
 gobcache is a simple way to store data temporarily. 
 
+[![GoDoc](https://godoc.org/github.com/ilk/gobcache?status.svg)](https://godoc.org/github.com/ilk/gobcache)
+
 Main usage is for development where you have to deal with data which takes long to fetch.
 
-# Example usage
+## Example usage
 ```go
   import (
     "fmt"
