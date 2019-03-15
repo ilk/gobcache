@@ -1,8 +1,7 @@
 # gobcache
-
-gobcache is a simple way to store data temporarily. 
-
 [![GoDoc](https://godoc.org/github.com/ilk/gobcache?status.svg)](https://godoc.org/github.com/ilk/gobcache)
+
+gobcache is a simple way to store data temporarily.
 
 Main usage is for development where you have to deal with data which takes long to fetch.
 
