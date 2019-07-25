@@ -3,10 +3,7 @@ package gobcache
 import (
 	"log"
 	"os"
-)
-
-const (
-	defTTL = 8
+	"strings"
 )
 
 // config holds up parameters
@@ -14,7 +11,7 @@ type Config struct {
 	// Were the *.gob files will be stored, default is $TMPDIR/<name of executable>
 	Path string
 	// Renew cache when file is older than TTL (in hours)
-	TTL int64
+	TTL *int64
 	// Add custom logger, default adds a prefix "[gobcache] date time"
 	Logger *log.Logger
 }
@@ -29,7 +26,7 @@ func (c *Config) setDefaultDirectoryIfNotExit() {
 	if err != nil {
 		err := os.MkdirAll(os.TempDir(), 0755)
 		if err == nil {
-			c.Path = os.TempDir()
+			c.Path = strings.TrimRight(os.TempDir(), "/")
 		} else {
 			c.Path = "."
 		}
@@ -43,7 +40,9 @@ func (c *Config) setDefaultLoggerIfNil() {
 }
 
 func (c *Config) setDefaultTTL() {
-	if c.TTL == 0 {
-		c.TTL = defTTL
+	if c.TTL == nil {
+		var ttl int64
+		ttl = 8
+		c.TTL = &ttl
 	}
 }

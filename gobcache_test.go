@@ -24,4 +24,21 @@ func TestCache(t *testing.T) {
 	}
 	fmt.Printf("In: %s\n", in)
 	fmt.Printf("Out: %s\n", out)
+
+
+	in = []byte{}
+	identifier2 := "test2"
+
+	if err := c.SaveData(identifier2, in); err != nil {
+		t.Error(err)
+	}
+
+	if err := c.GetData(identifier2, &out); err != nil {
+		t.Error(err)
+	}
+	if string(in) != string(out) {
+		t.Errorf("results are not the same")
+	}
+	fmt.Printf("In: %s\n", in)
+	fmt.Printf("Out: %s\n", out)
 }

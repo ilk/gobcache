@@ -6,7 +6,7 @@ import (
 	"github.com/djherbis/times"
 )
 
-func fileExistsAndNotOlderThan(src string, hours int64) bool {
+func fileExistsAndNotOlderThan(src string, hours *int64) bool {
 
 	unixnow := time.Now().Unix()
 	t, err := times.Stat(src)
@@ -16,7 +16,7 @@ func fileExistsAndNotOlderThan(src string, hours int64) bool {
 	mtime := t.ModTime().Unix()
 	diff := (unixnow - mtime) / 60 / 60
 
-	if diff < hours {
+	if diff < *hours {
 		return true
 	}
 

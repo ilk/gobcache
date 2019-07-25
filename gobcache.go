@@ -20,7 +20,7 @@ func NewCache(config Config) Client {
 
 // SaveData store the data by the given identifier
 func (c *Client) SaveData(identifier string, data interface{}) error {
-	file := fmt.Sprintf("%s%s.gob", c.config.Path, identifier)
+	file := fmt.Sprintf("%s/%s.gob", c.config.Path, identifier)
 	fh, err := os.Create(file)
 	if err != nil {
 		return err
@@ -37,7 +37,7 @@ func (c *Client) SaveData(identifier string, data interface{}) error {
 
 // GetData gets the data by the given identifier
 func (c *Client) GetData(identifier string, obj interface{}) error {
-	filename := fmt.Sprintf("%s%s.gob", c.config.Path, identifier)
+	filename := fmt.Sprintf("%s/%s.gob", c.config.Path, identifier)
 	if !fileExistsAndNotOlderThan(filename, c.config.TTL) {
 		c.config.Logger.Printf("%s does exists or is older than %d\n", filename, c.config.TTL)
 		return fmt.Errorf("%s does not exists or is older than %d\n", filename, c.config.TTL)
